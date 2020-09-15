@@ -1,0 +1,7 @@
+/*
+ Sytlesheet bundled by webpack and is imported in entry point
+ */
+
+* {
+  background: lightblue;
+}

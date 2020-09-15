@@ -1,0 +1,4 @@
+//install presets that help translate JS syntax for browser usage
+{
+  "presets": [ '@babel/preset-react', '@babel/preset-env']
+}
