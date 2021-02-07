@@ -1,14 +1,17 @@
-import React, { Component } from 'react'
-import OauthLoginForm from './oauth-login-form'
+import React, { Component } from "react";
+import OauthLoginForm from "./oauth-login-form";
+import ToDo from "./ToDo";
 
-class Root extends Component {
-  render() {
-    return (
-      <div>
-        <OauthLoginForm />
-      </div>
-    )
-  }
+const Root = () => {
+  return (
+    <div>
+      {/* <OauthLoginForm /> */}
+      <ToDo />
+      {/* <Pomodoro />
+      <GoogleCal />
+      <Spotify /> */}
+    </div>
+  );
 }
 
-export default Root
+export default Root;

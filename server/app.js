@@ -16,27 +16,27 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.static(path.join(__dirname, '../public')));
 
 //authentication with express-session passport and connection-session-sequelize
-const session = require('express-session');
-//google oauth
-if (process.env.Node_ENV === 'development') {
-  require('./auth/secrets');
-}
+// const session = require('express-session');
+// //google oauth
+// if (process.env.Node_ENV === 'development') {
+//   require('./auth/secrets');
+// }
 
 //storing secrets in the database - sessionStore
-const dbStore = require('./auth/dbStore')
-dbStore.sync();
+// const dbStore = require('./auth/dbStore')
+// dbStore.sync();
 
 //session middleware
-app.use(session({
-  secret: process.env.GOOGLE_CLIENT_SECRET || 'secret code',
-  store: dbStore,
-  resave: false,
-  saveUninitialized: false
-}))
+// app.use(session({
+//   secret: process.env.GOOGLE_CLIENT_SECRET || 'secret code',
+//   store: dbStore,
+//   resave: false,
+//   saveUninitialized: false
+// }))
 
 //API route
 app.use('/api', require('./api'))
-app.use('/auth', require('./auth'))
+// app.use('/auth', require('./auth'))
 
 //API route doesn't exist then app.get * loads
 app.get('*', (req, res) => {

@@ -1,14 +1,23 @@
-const db = require('./database');
+const { MongoClient } = require('mongodb');
+const { mongoURI } = require('../../secrets')
 
-//require models from models folder
-const User = require('./models/user');
-const Account = require('./models/account');
-
-//define associations between models
-User.hasOne(Account)
-
-module.exports = {
-  db,
-  User,
-  Account
+async function main() {
+  // const uri = "mongodb+srv://melissa:productivity@tasks.lrdq1.mongodb.net/<dbname>?retryWrites=true&w=majority";
+  const client = new MongoClient(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+  try {
+    await client.connect();
+    await listDatabases(client);
+  } catch(error) {
+    console.log(error);
+  } finally {
+    await client.close();
+  }
 }
+
+async function listDatabases(client) {
+  databasesList = await client.db().admin().listDatabases();
+  // console.log(databasesList);
+  // databasesList.databases.forEach(db => console.log(` - ${db.name}`))
+}
+
+main().catch(console.error)

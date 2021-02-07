@@ -10,7 +10,6 @@ import Root from './components/Root'
 //React and redux Dom rendering with #app defined in html
 render(
   <Provider store={store}>
-    <div>Hello, world!</div>
     <Root />
   </Provider>,
   document.getElementById('app')
