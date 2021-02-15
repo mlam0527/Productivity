@@ -2,7 +2,6 @@ const { MongoClient } = require('mongodb');
 const { mongoURI } = require('../../secrets')
 
 async function main() {
-  // const uri = "mongodb+srv://melissa:productivity@tasks.lrdq1.mongodb.net/<dbname>?retryWrites=true&w=majority";
   const client = new MongoClient(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
   try {
     await client.connect();

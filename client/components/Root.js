@@ -7,9 +7,9 @@ const Root = () => {
     <div>
       {/* <OauthLoginForm /> */}
       <ToDo />
-      {/* <Pomodoro />
-      <GoogleCal />
-      <Spotify /> */}
+      {/* <Pomodoro /> */}
+      {/* <GoogleCal /> */}
+      {/* <Spotify /> */}
     </div>
   );
 }
