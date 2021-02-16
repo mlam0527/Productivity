@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 //require all API routes - '/api/routeName'
-router.use('/test', require('./test'))
+router.use('/loggedIn', require('./loggedIn'))
 
 //404 error handler
 router.use((req, res, next)=> {

@@ -7,7 +7,7 @@ router.get('/', passport.authenticate('google', { scope: 'email' }));
 
 //callback after signining in with Google
 router.get("/callback", passport.authenticate("google", {
-  successRedirect: "/",
+  successRedirect: "/me",
   failureRedirect: "/login"
 }));
 

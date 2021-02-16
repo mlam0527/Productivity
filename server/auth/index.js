@@ -4,7 +4,7 @@ const router = require('express').Router();
 router.use('/login', require('./login'))
 // router.use('/signup', require('./signup'))
 router.use('/logout', require('./logout'))
-// router.use('/me', require('./loggedIn'))
+router.use('/me', require('./loggedIn'))
 
 //routes for Google oauth
 router.use('/google', require('./oauth'))
