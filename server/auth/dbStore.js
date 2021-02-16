@@ -12,6 +12,7 @@ const secretDB = new Sequelize('secret_database', 'username', 'password', {
   dialect: 'sqlite'
 })
 
-const dbStore = new SequelizeStore({ db: secretDB }) //create and config the database for secrets
+const dbStore = new SequelizeStore({ db: secretDB })
+//create and config the database for secrets
 
 module.exports = dbStore;

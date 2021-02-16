@@ -1,41 +1,41 @@
 const router = require('express').Router();
 const passport = require('passport');
-
+const { googleClientSecret, googleClientID } = require('../../secrets');
+const Account = require('../db/models/Accounts')
 //redirect with get request at '/auth/google/' from index.js
 router.get('/', passport.authenticate('google', { scope: 'email' }));
 
 //callback after signining in with Google
-router.get('/auth/google/callback', passport.authenticate('google', {
-  successRedirect: '/',
-  failureRedirect: '/login'
+router.get("/callback", passport.authenticate("google", {
+  successRedirect: "/",
+  failureRedirect: "/login"
 }));
 
 //strategy to store permanent access token on user model
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-require('./secrets')
-// collect our google configuration into an object
 const googleConfig = {
-  clientID: process.env.GOOGLE_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  clientID: googleClientID,
+  clientSecret: googleClientSecret,
   callbackURL: '/auth/google/callback'
 };
 
-// configure the strategy with our config object, and write the function that passport will invoke after google sends
-// us the user's profile and access token
+// configure the strategy with our config object, and write the function that passport will invoke after google sends us the user's profile and access token
 const strategy = new GoogleStrategy(googleConfig, function (token, refreshToken, profile, done) {
+
+  //passport callback function  
   const googleId = profile.id;
   const name = profile.displayName;
   const email = profile.emails[0].value;
 
-  User.findOne({where: { googleId: googleId  }})
-    .then(function (user) {
-      if (!user) {
-        return User.create({ name, email, googleId })
-          .then(function (user) {
-            done(null, user);
+  Account.findOne({ googleId: googleId  })
+    .then(function (doc) {
+      if (!doc) {
+        return Account.create({ googleId, name, email })
+          .then(function (doc) {
+            done(null, doc);
           });
       } else {
-        done(null, user);
+        done(null, doc);
       }
     })
     .catch(done);
@@ -44,6 +44,6 @@ const strategy = new GoogleStrategy(googleConfig, function (token, refreshToken,
 // register our strategy with passport
 passport.use(strategy);
 
-router.use(require('./passport.middleware'))
+router.use(require('./passport.middleware'));
 
 module.exports = router;

@@ -5,3 +5,4 @@ bundle.js.map
 .vscode
 
 secrets.js
+credentials.json
