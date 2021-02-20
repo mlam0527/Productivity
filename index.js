@@ -2,7 +2,7 @@ const app = require('./server/app')
 const { db }= require('./server/db')
 
 //port of environment or local port
-const PORT = process.env.PORT || 1400;
+const PORT = process.env.PORT || 8080;
 
 // db sync then load server
 // db.sync({ force: true })
