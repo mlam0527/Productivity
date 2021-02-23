@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -15,8 +15,8 @@ const Root = () => {
       <div>
         <Switch>
           <Route exact path='/loggedIn'>
-          {/* <GoogleCal /> */}
-            <ToDo />
+          <GoogleCal />
+            {/* <ToDo /> */}
           {/* <Pomodoro /> */}
           {/* <Spotify /> */}
           </Route>

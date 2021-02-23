@@ -4,5 +4,6 @@ bundle.js.map
 .DS_Store
 .vscode
 
+token.json
 secrets.js
 credentials.json

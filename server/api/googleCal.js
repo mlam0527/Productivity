@@ -1,7 +1,7 @@
 const fs = require("fs");
 const readline = require("readline");
 const { google } = require("googleapis");
-const { replicapool } = require("googleapis/build/src/apis/replicapool");
+const {TOKEN_PATH} = require('../../token.json')
 
 const SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"];
 const TOKEN_PATH = "token.json";
@@ -37,10 +37,10 @@ function authorize(credentials, callback) {
   // let answer;
   // Check if we have previously stored a token.
   return new Promise((resolve, reject) =>
-    fs.readFile(TOKEN_PATH, (err, token) => {
+    fs.readFile("token.json", (err, token) => {
       if (err) return getAccessToken(oAuth2Client, callback);
       oAuth2Client.setCredentials(JSON.parse(token));
-      const ev =  callback(oAuth2Client);
+      const ev = callback(oAuth2Client);
       resolve(ev)
     // console.log(answer)
   }));
@@ -54,6 +54,7 @@ function authorize(credentials, callback) {
  * @param {getEventsCallback} callback The callback for the authorized client.
  */
 function getAccessToken(oAuth2Client, callback) {
+  console.log('In getAccessToken')
   const authUrl = oAuth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: SCOPES,
@@ -69,7 +70,7 @@ function getAccessToken(oAuth2Client, callback) {
       if (err) return console.error('Error retrieving access token', err);
       oAuth2Client.setCredentials(token);
       // Store the token to disk for later program executions
-      fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
+      fs.writeFile('token.json', JSON.stringify(token), (err) => {
         if (err) return console.error(err);
         console.log('Token stored to', TOKEN_PATH);
       });
@@ -84,9 +85,16 @@ function getAccessToken(oAuth2Client, callback) {
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
 async function listEvents(auth) {
-   console.log('inEventList')
-  const calendar = google.calendar({ version: 'v3', auth });
+  console.log('inEventList')
+  const calendar = google.calendar({ version: 'v3', auth});
   let calEvents; 
+  console.log({
+    calendarId: 'primary',
+    timeMin: (new Date()).toISOString(),
+    maxResults: 10,
+    singleEvents: true,
+    orderBy: 'startTime',
+  })
   const res = await calendar.events.list({
     calendarId: 'primary',
     timeMin: (new Date()).toISOString(),
@@ -94,21 +102,22 @@ async function listEvents(auth) {
     singleEvents: true,
     orderBy: 'startTime',
   });
+  console.log(res)
     // , (err, res) => {
     
       // if (err) return console.log('The API returned an error: ' + err);
-    const events = res.data.items;
-      calEvents = events;
-    if (events.length) {
-      console.log('Upcoming 10 events:');
-      events.map((event, i) => {
-        const start = event.start.dateTime || event.start.date;
-        console.log(`${start} - ${event.summary}`);
-      });
-    } else {
-      console.log('No upcoming events found.');
+  const events = res.data.items;
+  console.log(events)
+  calEvents = events;
+  if (events.length) {
+    console.log('Upcoming 10 events:');
+    events.map((event, i) => {
+      const start = event.start.dateTime || event.start.date;
+      console.log(`${start} - ${event.summary}`);
+    });
+  } else {
+    console.log('No upcoming events found.');
   };
-  console.log('calEvents', calEvents[0].summary)
   return calEvents;
 }
 

@@ -4,14 +4,13 @@ const { getGoogleCal } = require('./googleCal');
 //define express routes
 router.get('/', async (req, res, next) => {
   try {
-    console.log('here')
-    // getGoogleCal().then((events) => {
-    //   console.log('here')
-    //   res.send(events)
-    //   console.log(events)
-    // })
-    const events = await getGoogleCal().then((data) => console.log('api route',     res.send(data)))
-    // console.log('events', events)
+    await getGoogleCal().then((data) => {
+      
+      let today = [];
+      let tomorrow = [];
+      let following = [];
+      res.send(data)
+    })
   } catch(err) {
     next(err)
   }
