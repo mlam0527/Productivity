@@ -1,7 +1,7 @@
 const fs = require("fs");
 const readline = require("readline");
 const { google } = require("googleapis");
-const {TOKEN_PATH} = require('../../token.json')
+// const {TOKEN_PATH} = require('../../token.json')
 
 const SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"];
 const TOKEN_PATH = "token.json";
@@ -59,6 +59,7 @@ function getAccessToken(oAuth2Client, callback) {
     access_type: 'offline',
     scope: SCOPES,
   });
+  // TASK: authorize the url, need to send the link to the front end for user to approve
   console.log('Authorize this app by visiting this url:', authUrl);
   const rl = readline.createInterface({
     input: process.stdin,
@@ -86,8 +87,7 @@ function getAccessToken(oAuth2Client, callback) {
  */
 async function listEvents(auth) {
   console.log('inEventList')
-  const calendar = google.calendar({ version: 'v3', auth});
-  let calEvents; 
+  const calendar = google.calendar({ version: 'v3', auth}); 
   console.log({
     calendarId: 'primary',
     timeMin: (new Date()).toISOString(),
@@ -102,13 +102,10 @@ async function listEvents(auth) {
     singleEvents: true,
     orderBy: 'startTime',
   });
-  console.log(res)
     // , (err, res) => {
     
       // if (err) return console.log('The API returned an error: ' + err);
   const events = res.data.items;
-  console.log(events)
-  calEvents = events;
   if (events.length) {
     console.log('Upcoming 10 events:');
     events.map((event, i) => {
@@ -118,6 +115,13 @@ async function listEvents(auth) {
   } else {
     console.log('No upcoming events found.');
   };
+  const calEvents = events.map((event) => {
+    return {
+      summary: event.summary,
+      startTime: event.start.dateTime,
+      endTime: event.end.dateTime,
+    }
+  })
   return calEvents;
 }
 

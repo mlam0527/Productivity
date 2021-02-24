@@ -1,7 +1,26 @@
 /*
  Sytlesheet bundled by webpack and is imported in entry point
- */
+*/
+ 
+/*
+ #FCF6B1
+ #93B7BE
+ #001021
+ #034748
+ #FF5A5F
+*/
 
-* {
-  background: lightblue;
+body {
+  background: #FCF6B1;
+}
+
+#googleCal {
+  padding: 0.5em;
+}
+
+#eventCard {
+  background-color: #93B7BE;
+  padding: 0.5em;
+  /* border-radius: 0.5em; */
+  border: #FCF6B1 solid 0.5em;
 }

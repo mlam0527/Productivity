@@ -5,11 +5,35 @@ const { getGoogleCal } = require('./googleCal');
 router.get('/', async (req, res, next) => {
   try {
     await getGoogleCal().then((data) => {
-      
       let today = [];
-      let tomorrow = [];
-      let following = [];
-      res.send(data)
+      let upcoming = [];
+      let currentDay = new Date(Date.now()).getDate();
+      for (let i = 0; i < data.length; i++) {
+        const event = data[i];
+        const startDate = new Date(event.startTime);
+        const endDate = new Date(event.endTime)
+        const day = startDate.getDate();
+        const start = {
+          month: startDate.getMonth(),
+          day: day,
+          hour: startDate.getHours(),
+          mins: startDate.getMinutes()
+        }
+        const end = {
+          month: endDate.getMonth(),
+          day: endDate.getDate(),
+          hour: endDate.getHours(),
+          mins: endDate.getMinutes(),
+        }
+        event.startTime = start;
+        event.endTime = end;
+        if (currentDay === day) {
+          today.push(event)
+        } else {
+          upcoming.push(event)
+        }
+      }
+      res.send([today, upcoming])
     })
   } catch(err) {
     next(err)
